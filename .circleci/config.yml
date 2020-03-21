@@ -1,0 +1,42 @@
+version: 2
+jobs:
+  test_and_build:
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - dependencies-{{ checksum "package.json" }}
+      - run:
+          name: Installing dependencies
+          command: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: dependencies-{{ checksum "package.json" }}
+      - run:
+          name: Running Formatter
+          command: npm run format
+      - run:
+          name: Running Linter
+          command: npm run lint
+      - run:
+          name: Running E2E Tests
+          command: npm run test:e2e
+      - run:
+          name: Running Unit Tests
+          command: npm run test
+      - run:
+          name: Running Build
+          command: npm run build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+workflows:
+  version: 2
+  test_and_build:
+    jobs:
+      - test_and_build
