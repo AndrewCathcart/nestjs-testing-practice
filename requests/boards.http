@@ -1,0 +1,21 @@
+GET http://localhost:3000/boards/
+
+###
+POST http://localhost:3000/boards/new HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Testing Board"
+}
+
+###
+GET http://localhost:3000/boards/4
+
+###
+PATCH http://localhost:3000/boards/4 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Patched Board",
+    "dateUpdated": "2020-01-01T00:00:00.000Z"
+}
