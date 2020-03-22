@@ -34,11 +34,8 @@ export class BoardsService {
   }
 
   getById(id: string): Board {
-    const foundBoard = this.boards.find(board => board.id === id);
-    if (!foundBoard) {
-      throw new BadRequestException(`No board found with id ${id}.`);
-    }
-    return foundBoard;
+    const index = this.findBoardIndex(id);
+    return this.boards[index];
   }
 
   addBoard(board: BoardDTO): Board {
@@ -56,16 +53,40 @@ export class BoardsService {
     return newBoard;
   }
 
-  deleteBoard(id: string): boolean {
+  deleteBoard(id: string): Board[] {
+    const index = this.findBoardIndex(id);
+
+    this.boards = this.boards.filter(
+      (_board, boardIndex) => boardIndex !== index,
+    );
+
+    return this.boards;
+  }
+
+  updateBoard(id: string, boardDTO: BoardDTO): Board {
+    const index = this.findBoardIndex(id);
+
+    const originalBoard = this.boards[index];
+    const updatedBoard = {
+      name: boardDTO.name,
+      id: originalBoard.id,
+      dateCreated: originalBoard.dateCreated,
+      dateUpdated: new Date(Date.now()),
+      isStarred: originalBoard.isStarred,
+    };
+
+    this.boards[index] = updatedBoard;
+
+    return updatedBoard;
+  }
+
+  private findBoardIndex(id: string): number {
     const index = this.boards.findIndex(board => board.id === id);
 
     if (index === -1) {
-      return false;
-    } else {
-      this.boards = this.boards.filter(
-        (board, boardIndex) => boardIndex !== index,
-      );
-      return true;
+      throw new BadRequestException(`No board found with id ${id}.`);
     }
+
+    return index;
   }
 }

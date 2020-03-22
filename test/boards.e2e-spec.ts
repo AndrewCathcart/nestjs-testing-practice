@@ -52,6 +52,7 @@ describe('Boards (e2e)', () => {
           getById: jest.fn().mockReturnValue(testBoard3),
           addBoard: jest.fn().mockReturnValue(testBoard4),
           deleteBoard: jest.fn().mockReturnValue({ deleted: true }),
+          updateBoard: jest.fn().mockReturnValue({ updated: true }),
         })
         .compile();
 
@@ -140,6 +141,15 @@ describe('Boards (e2e)', () => {
           .delete('/boards/2')
           .expect(200)
           .expect({ deleted: true });
+      });
+    });
+
+    describe('/boards/:id (PATCH)', () => {
+      it('should return true if we updated a board', () => {
+        return request(app.getHttpServer())
+          .patch('/boards/2')
+          .expect(200)
+          .expect({ updated: true });
       });
     });
 

@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 import { BoardsService } from './boards.service';
 import { BoardDTO } from './dto/board.dto';
+import { Board } from './models/board';
 
 describe('BoardsService', () => {
   let service: BoardsService;
@@ -78,11 +79,33 @@ describe('BoardsService', () => {
   });
 
   describe('deleteBoard', () => {
-    it('should return true if an item with a matching id was deleted', () => {
-      expect(service.deleteBoard('2'));
+    it('repository should not contain the deleted id', () => {
+      const result = service.deleteBoard('2');
+      expect(result).toEqual(
+        expect.not.arrayContaining([expect.objectContaining({ id: '2' })]),
+      );
     });
-    it('should return false if an item with a matching id does not exist', () => {
-      expect(service.deleteBoard('1234534664578238123'));
+    it('should throw an error if no board with that id exists', () => {
+      try {
+        service.deleteBoard('9929292');
+      } catch (err) {
+        expect(err.response.message).toBe('No board found with id 9929292.');
+        expect(err.response.error).toBe('Bad Request');
+      }
+    });
+  });
+
+  describe('updateBoard', () => {
+    it('should correctly update the board', () => {
+      const boardDTO: BoardDTO = {
+        name: 'Edited the name',
+      };
+
+      const updatedBoard: Board = service.updateBoard('2', boardDTO);
+
+      expect(updatedBoard).toBeTruthy();
+      expect(updatedBoard.name).toEqual('Edited the name');
+      expect(updatedBoard.id).toEqual('2');
     });
   });
 

@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { BoardsService } from './boards.service';
 import { BoardsController } from './boards.controller';
 import { Board } from './models/board';
+import { BoardDTO } from './dto/board.dto';
 
 const testBoard1 = new Board(
   '1',
@@ -46,7 +47,8 @@ describe('Boards Controller', () => {
             getAll: jest.fn().mockReturnValue([testBoard1, testBoard2]),
             getById: jest.fn().mockReturnValue(testBoard3),
             addBoard: jest.fn().mockReturnValue(testBoard4),
-            deleteBoard: jest.fn().mockReturnValue(true),
+            deleteBoard: jest.fn().mockReturnValue(true), // don't care about what it returns
+            updateBoard: jest.fn().mockReturnValue(true), // don't care about what it returns
           },
         },
       ],
@@ -80,11 +82,11 @@ describe('Boards Controller', () => {
 
   describe('createNewBoard', () => {
     it('should return a new board', () => {
-      const returnedBoard = controller.createNewBoard({
+      const newBoard = controller.createNewBoard({
         name: 'Controller Test Board 4',
       });
-      expect(returnedBoard.id).toBe('4');
-      expect(returnedBoard.name).toBe('Controller Test Board 4');
+      expect(newBoard.id).toBe('4');
+      expect(newBoard.name).toBe('Controller Test Board 4');
     });
   });
 
@@ -92,7 +94,17 @@ describe('Boards Controller', () => {
     it('should return true that there was a deletion', () => {
       const delReturn = controller.deleteBoard('2');
       expect(typeof delReturn).toBe('boolean');
-      expect(delReturn);
+      expect(delReturn).toBeTruthy();
+    });
+  });
+
+  describe('updateBoard', () => {
+    it('should return true that there was an update', () => {
+      const boardDTO = new BoardDTO('Updated Name');
+      const updatedBoard = controller.updateBoard('2', boardDTO);
+
+      expect(typeof updatedBoard).toBe('boolean');
+      expect(updatedBoard).toBeTruthy();
     });
   });
 });
