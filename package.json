@@ -1,7 +1,7 @@
 {
-  "name": "kanban-board-api",
+  "name": "nestjs-testing-practice",
   "version": "0.0.1",
-  "description": "Backend code for a Trello clone / TODO app",
+  "description": "TDD Practice",
   "author": "Andrew Cathcart",
   "private": true,
   "license": "UNLICENSED",

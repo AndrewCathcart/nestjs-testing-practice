@@ -39,7 +39,6 @@ export class BoardsService {
   }
 
   addBoard(board: BoardDTO): Board {
-    // TODO: hacky for now but we're going to move to a Database soon where id's will be generated for us
     const newId = Number(this.boards[this.boards.length - 1].id) + 1;
     const newBoard = new Board(
       newId.toString(),
