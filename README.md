@@ -1,8 +1,8 @@
-# kanban-board-api [![CircleCI](https://circleci.com/gh/AndrewCathcart/kanban-board-api.svg?style=svg)](https://app.circleci.com/pipelines/github/AndrewCathcart/kanban-board-api)
+# nestjs-testing-practice [![CircleCI](https://circleci.com/gh/AndrewCathcart/nestjs-testing-practice.svg?style=svg)](https://app.circleci.com/pipelines/github/AndrewCathcart/nestjs-testing-practice)
 
 ## Description
 
-Server-side code for a heavily Trello influenced Kanban board written using the [Nestjs](https://github.com/nestjs/nest) framework & [TypeScript](https://www.typescriptlang.org/).
+Practice writing Unit & End to End tests in a [Nestjs](https://github.com/nestjs/nest) & [TypeScript](https://www.typescriptlang.org/) project.
 
 ## Installation
 
