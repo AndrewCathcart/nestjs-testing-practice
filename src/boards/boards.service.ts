@@ -39,9 +39,9 @@ export class BoardsService {
   }
 
   addBoard(board: BoardDTO): Board {
-    const newId = Number(this.boards[this.boards.length - 1].id) + 1;
+    const newId = this.generateNewId();
     const newBoard = new Board(
-      newId.toString(),
+      newId,
       board.name,
       new Date(Date.now()),
       new Date(Date.now()),
@@ -87,5 +87,17 @@ export class BoardsService {
     }
 
     return index;
+  }
+
+  private generateNewId(): string {
+    let newId = '1';
+    const boardsIsNotEmpty = this.boards.length > 0;
+
+    if (boardsIsNotEmpty) {
+      const lastBoard = this.boards.slice(-1)[0];
+      newId = (Number(lastBoard.id) + 1).toString();
+    }
+
+    return newId;
   }
 }

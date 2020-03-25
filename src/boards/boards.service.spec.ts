@@ -67,14 +67,36 @@ describe('BoardsService', () => {
       const boardDTO: BoardDTO = {
         name: 'New Board Added',
       };
-      const newBoard = service.addBoard(boardDTO);
-      expect(newBoard).toEqual({
+
+      service.addBoard(boardDTO);
+
+      const boards = service.getAll();
+      expect(boards).toHaveLength(4);
+      expect(boards[3]).toEqual({
         ...boardDTO,
         dateCreated: new Date(1),
         dateUpdated: new Date(1),
         id: '4',
         isStarred: false,
       });
+    });
+
+    it('should add the correct id if we have no boards to start with', () => {
+      // setup and check we have no existing boards
+      service.deleteBoard('1');
+      service.deleteBoard('2');
+      service.deleteBoard('3');
+      expect(service.getAll()).toHaveLength(0);
+
+      // add a new board, so we now have one board
+      const boardDTO: BoardDTO = {
+        name: 'First Board',
+      };
+      service.addBoard(boardDTO);
+
+      const boards = service.getAll();
+      expect(boards).toHaveLength(1);
+      expect(boards[0].id).toEqual('1');
     });
   });
 
@@ -85,6 +107,7 @@ describe('BoardsService', () => {
         expect.not.arrayContaining([expect.objectContaining({ id: '2' })]),
       );
     });
+
     it('should throw an error if no board with that id exists', () => {
       try {
         service.deleteBoard('9929292');
